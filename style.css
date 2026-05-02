@@ -1,0 +1,57 @@
+/* style.css */
+
+/* 基本重置和全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* 确保 body 占据整个视口，并设置背景色 */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* 防止滚动条出现 */
+    background-color: rgb(122, 122, 122); /* 设置整个页面的背景色为灰色 */
+}
+
+/* 确保 app-container 占据整个视口，并居中其内容 */
+#app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex; /* 确保 flex 布局 */
+    flex-direction: column; /* 垂直排列子元素 */
+    align-items: center; /* 水平居中 */
+    justify-content: center; /* 垂直居中 */
+    /* 移除背景色，让 body 的背景色透过来 */
+    background-color: transparent; 
+}
+
+
+/* 确保 Canvas 响应式并填充整个屏幕 */
+#experimentCanvas {
+    width: 100vw; /* 宽度占满视口 */
+    height: 100vh; /* 高度占满视口 */
+    display: block; /* 移除 Canvas 下方的额外空间 */
+    margin: 0; /* 移除所有外边距 */
+    /* 背景色将由 JavaScript 在绘制时设置 */
+    background-color: transparent; 
+}
+
+/* 加载动画 */
+.loader {
+    border-top-color: #3498db; /* 蓝色 */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 隐藏和显示类（由 JavaScript 控制） */
+.hidden {
+    display: none !important;
+}
+
+/* 确保 flex 布局类存在 */
+.flex {
+    display: flex;
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理学实验</title>
+    <!-- 引入 Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入自定义样式文件 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 设置默认字体为 Inter -->
+    <style>
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(122, 122, 122); /* 灰色背景 */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden; /* 防止滚动条 */
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <!-- 移除 app-container 的背景、阴影、圆角和内边距，让它只作为容器 -->
+    <div id="app-container" class="w-full h-full min-h-screen flex flex-col items-center justify-center">
+        <!-- 实验启动界面 -->
+        <div id="start-screen" class="space-y-6 bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">欢迎您参加本实验！</h1>
+            <p class="text-gray-600 mb-6">请在下方输入您的被试号，然后点击开始实验。</p>
+            
+            <div class="flex flex-col items-center space-y-4">
+                <input type="text" id="subject-id" placeholder="请输入您的被试号"
+                       class="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-gray-800">
+            </div>
+            
+            <button id="start-button"
+                    class="mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+                开始实验
+            </button>
+        </div>
+
+        <!-- 加载指示器 (初始隐藏) -->
+        <div id="loading-spinner" class="hidden flex flex-col items-center justify-center py-10">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+            <p class="text-gray-600">正在加载刺激，请稍候...</p>
+        </div>
+
+        <!-- 实验画布 (初始隐藏) -->
+        <!-- 移除 border, rounded-lg, bg-gray-50 类，让它完全由 JS 控制尺寸和背景 -->
+        <canvas id="experimentCanvas" class="hidden" tabindex="0"></canvas>
+
+        <!-- 实验结束界面 (初始隐藏) -->
+        <div id="end-screen" class="hidden space-y-6 bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl text-center">
+            <h2 class="text-3xl font-bold text-green-600">实验完成！</h2>
+            <p class="text-gray-700">感谢您的参与。您可以关闭此页面。</p>
+        </div>
+    </div>
+
+    <script>
+      // 获取语言参数，默认中文
+      function getLang() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('lang') || 'zh';
+      }
+      const lang = getLang();
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = `./Script/experiment.${lang}.js`;
+      document.head.appendChild(script);
+
+      // 多语言文本对象
+    const i18n = {
+    zh: {
+        title: "欢迎您参加本实验！",
+        inputTip: "请在下方输入您的被试号，然后点击开始实验。",
+        placeholder: "请输入您的被试号",
+        start: "开始实验",
+        loading: "正在加载刺激，请稍候...",
+        endTitle: "实验完成！",
+        endTip: "感谢您的参与。您可以关闭此页面。"
+    },
+    en: {
+        title: "Welcome to the experiment!",
+        inputTip: "Please enter your subject ID below and click Start.",
+        placeholder: "Enter your subject ID",
+        start: "Start Experiment",
+        loading: "Loading stimuli, please wait...",
+        endTitle: "Experiment Completed!",
+        endTip: "Thank you for your participation. You may close this page."
+    },
+    fr: {
+        title: "Bienvenue à l'expérience !",
+        inputTip: "Veuillez entrer votre numéro de participant ci-dessous, puis cliquez sur Démarrer.",
+        placeholder: "Entrez votre numéro de participant",
+        start: "Démarrer l'expérience",
+        loading: "Chargement des stimuli, veuillez patienter...",
+        endTitle: "Expérience terminée !",
+        endTip: "Merci pour votre participation. Vous pouvez fermer cette page."
+    }
+    };
+    function setLangUI(lang) {
+    const t = i18n[lang] || i18n.zh;
+    document.querySelector('#start-screen h1').textContent = t.title;
+    document.querySelector('#start-screen p').textContent = t.inputTip;
+    document.querySelector('#subject-id').placeholder = t.placeholder;
+    document.querySelector('#start-button').textContent = t.start;
+    document.querySelector('#loading-spinner p').textContent = t.loading;
+    document.querySelector('#end-screen h2').textContent = t.endTitle;
+    document.querySelector('#end-screen p').textContent = t.endTip;
+    }
+    setLangUI(lang);
+    </script>
+    <script type="module" src="./Script/main.js"></script>
+</body>
+</html>
